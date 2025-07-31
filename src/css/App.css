@@ -1,0 +1,138 @@
+/*Header*/
+nav ul{
+    display:flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items: center;
+    list-style-type: none;
+    background-color: #FBDABB;
+    height:10vh;
+    border-radius: 0;
+}
+nav a{
+    display: flex;        
+    justify-content: center;  
+}
+nav img {
+  height: auto;       
+  width: auto;       
+}
+.header-text{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border:2px solid black;
+}
+.header-text h1{
+    color:#F4CE14;
+}
+.header-text h2{
+    color:#EDEFEE;
+}
+/*Header*/
+/*Table Selection Page*/
+.table-selection-form{
+    width:90%;
+    margin:0 auto;
+    border:2px solid black;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    grid-template-rows: repeat(7,auto );
+    grid-gap: 10px;
+    justify-items: center;
+    justify-content: center;
+    grid-template-areas:
+    "table-header table-header"
+    "img1 img2"
+    "date-box time-box"
+    "guest-box guest-box"
+    "occasion-box occasion-box"
+    "preference-box preference-box"
+    "table-availability-box table-availability-box"
+    "reservation-button reservation-button";
+}
+.form-box{
+    display:flex;
+    flex-direction: column;
+    border:2px solid black;
+    row-gap: 10px;
+    width:100%;
+    min-width:0px;
+}
+#img1{
+    width:100%;
+    height:auto;
+    grid-area: img1;
+}
+#img2{
+    width:100%;
+    height:auto;
+    grid-area: img2;
+}
+#table-header{
+    grid-area: table-header;
+}
+.date-box{
+    grid-area: date-box;
+}
+.time-box{
+    grid-area: time-box;
+}
+.guest-box{
+    grid-area: guest-box;
+}
+.occasion-box{
+    grid-area: occasion-box;
+}
+.form-box.preference-box{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items:flex-start;
+    grid-area: preference-box;
+    width:100%;
+}
+.form-box.preference-box span{
+    flex:1 1 100%;
+}
+.form-box.preference-box label{
+    border:2px solid black;
+    flex:0 1 auto;
+}
+.table-availability-box{
+    grid-area: table-availability-box;
+}
+#reservation-btn{
+    grid-area: reservation-button;
+}
+/*Table Selection Page*/
+/*Customer Details Page*/
+.customer-details-form{
+    width:60%;
+    margin:0 auto;
+    margin-top:10px;
+    border:2px solid black;
+    display:flex;
+    flex-direction: column;
+    border-radius: 16pt;
+    gap:10px;
+}
+@media (max-width: 668px){
+    .customer-details-form{
+        width:100%;
+    }
+}
+.customer-details-form .form-box input{
+   padding:0.25em;
+}
+.customer-details-form .form-box textarea{
+    height:7em;
+}
+.error{
+    color:#EE9972;
+}
+#details-btn{
+    padding:0.5em;
+}
+
