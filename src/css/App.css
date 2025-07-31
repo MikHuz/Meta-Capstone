@@ -21,7 +21,10 @@ nav img {
     display:flex;
     flex-direction: column;
     align-items: flex-start;
-    border:2px solid black;
+    
+}
+.header-text> *{
+    margin:0 5%;
 }
 .header-text h1{
     color:#F4CE14;
@@ -32,9 +35,8 @@ nav img {
 /*Header*/
 /*Table Selection Page*/
 .table-selection-form{
-    width:90%;
+    width:60%;
     margin:0 auto;
-    border:2px solid black;
     display:grid;
     grid-template-columns:repeat(2,1fr);
     grid-template-rows: repeat(7,auto );
@@ -51,10 +53,12 @@ nav img {
     "table-availability-box table-availability-box"
     "reservation-button reservation-button";
 }
+@media (max-width: 668px){
+    .table-selection-form{width:90%;}
+}
 .form-box{
     display:flex;
     flex-direction: column;
-    border:2px solid black;
     row-gap: 10px;
     width:100%;
     min-width:0px;
@@ -63,11 +67,13 @@ nav img {
     width:100%;
     height:auto;
     grid-area: img1;
+    border-radius: 16pt;
 }
 #img2{
     width:100%;
     height:auto;
     grid-area: img2;
+    border-radius: 16pt;
 }
 #table-header{
     grid-area: table-header;
@@ -84,7 +90,7 @@ nav img {
 .occasion-box{
     grid-area: occasion-box;
 }
-.form-box.preference-box{
+.preference-box{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -93,11 +99,12 @@ nav img {
     grid-area: preference-box;
     width:100%;
 }
-.form-box.preference-box span{
+.preference-box span{
+    color:#EDEFEE;
     flex:1 1 100%;
 }
-.form-box.preference-box label{
-    border:2px solid black;
+.preference-box label{
+    color:black;
     flex:0 1 auto;
 }
 .table-availability-box{
@@ -134,5 +141,32 @@ nav img {
 }
 #details-btn{
     padding:0.5em;
+}
+/*Confirmation Page*/
+#confirmation-page{
+    width:90%;
+    margin:0 auto;
+    margin-top:0.2rem;
+    background-color: #2E8B57;
+    border:2px solid black;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 16pt;
+    gap:10px;
+    text-align: center;
+}
+#confirmation-page h2{
+    margin-top:0.5em;
+    line-height:0;
+    margin-top:0.2rem;
+    line-height: 1;;
+    color:#EDEFEE;
+}
+#confirmation-page button{
+    padding:0.5em;
+    margin-bottom:0.5em;
+    margin-bottom:0.2rem;
 }
 

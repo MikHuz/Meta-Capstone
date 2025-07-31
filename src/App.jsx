@@ -184,7 +184,11 @@ const handleSubmit = (e) =>{
 
 function Confirmation(props){
   return (<>
-  <h1>Reservation Confirmed!</h1>
+  <div id="confirmation-page">
+  <h2>Reservation Confirmed!</h2>
+  <span>Thank you for choosing Little Lemon. We look forward to serving you!</span>
+  <button>Home</button>
+  </div>
   </>)
 }
 function Footer(props){
@@ -201,7 +205,7 @@ return (<>
     <Route path="/" element={<Navigate to="/reserve"/>}/>
     <Route path="/reserve" element={<ReserveATable/>}/>
     <Route path="/reserve/customerdetails" element={<CustomerDetails/>}/>
-    <Route path="/reserve/confirmation" element={<h1>Reservation Confirmed!</h1>}/>
+    <Route path="/reserve/confirmation" element={<Confirmation/>}/>
   </Routes>
   <Footer/>
 </>)

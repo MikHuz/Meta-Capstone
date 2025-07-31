@@ -24,14 +24,33 @@ body{
 }
 h1 {font: 500 1rem 'Markazi Text', 'Karla', sans-serif; /* Display Titles 64pt */}
 h2 {font: 400 calc(1rem * 0.625) 'Markazi Text', sans-serif; /* Sub heading 40pt */}
+@media(max-width:402px){
+    h1 {font-size:calc(1rem * 0.875); /* Display Titles 56pt */}
+    h2{font-size:calc(1rem * 0.5); /* Sub heading 32pt */}
+}
+@media(max-width:356px){
+    h1 {font-size:calc(1rem * 0.75); /* Display Titles 48pt */}
+    h2{font-size:calc(1rem * 0.4375); /* Sub heading 28pt */}
+}
 h3 {font:bold calc(1rem*0.28125) 'Markazi Text'/* Card title*/}
 .call-to-attention {font: 500 calc(1rem * 0.28125) 'karla', sans-serif; /* 18pt */}
 p {font: 400 calc(1rem * 0.25) 'Karla', sans-serif; line-height: 1.5;/* Paragraph Text 16pt */}
 label{font: 500 calc(1rem * 0.28125) 'karla', sans-serif; color:#EDEFEE; /* 18pt */}
-input, textarea,select{font: 400 calc(1rem * 0.25) 'Karla', sans-serif; border-radius: 16pt;line-height: 1.5;}
+input, textarea,select{font: 400 calc(1rem * 0.25) 'Karla', sans-serif; 
+  border-radius: 16pt;line-height: 1.5; 
+  border:1.5pt solid black; 
+  height:calc(1rem * 0.25 *2);/*16pt*/
+}
+input[type="radio"]{
+  height:auto;
+  margin-right:0.5em;
+  margin-left: 0.5em;
+}
+
+option{font: 400 calc(1rem * 0.25) 'Karla', sans-serif;}
 span{font: 500 calc(1rem * 0.28125) 'karla', sans-serif;}
 button{font: 500 calc(1rem * 0.28125) 'karla', sans-serif; background-color:#F4CE14; 
-border-radius: 16pt;}
+border-radius: 16pt;border:2px solid black;height:calc(1rem * 0.25 *2);cursor: pointer;}
 sup{
 vertical-align: text-top;
 color:#EE9972;
