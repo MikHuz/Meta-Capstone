@@ -1,19 +1,23 @@
 /*Header*/
-nav ul{
+header nav{
+  border:2px solid black;
+ height:10vh;
+ background-color: #FBDABB;
+ width:100%;
+}
+header nav ul{
     display:flex;
     flex-direction: row;
     justify-content:space-around;
     align-items: center;
     list-style-type: none;
-    background-color: #FBDABB;
-    height:10vh;
-    border-radius: 0;
+    height:100%;
 }
-nav a{
+header nav a{
     display: flex;        
     justify-content: center;  
 }
-nav img {
+header nav img {
   height: auto;       
   width: auto;       
 }
@@ -35,7 +39,7 @@ nav img {
 /*Header*/
 /*Table Selection Page*/
 .table-selection-form{
-    width:60%;
+    width:70%;
     margin:0 auto;
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -122,13 +126,17 @@ nav img {
     border:2px solid black;
     display:flex;
     flex-direction: column;
+    align-items: center;
     border-radius: 16pt;
-    gap:10px;
+    gap:0.1rem;
 }
 @media (max-width: 668px){
     .customer-details-form{
         width:100%;
     }
+}
+.customer-details-form > div{
+   width:90%;
 }
 .customer-details-form .form-box input{
    padding:0.25em;
@@ -138,9 +146,6 @@ nav img {
 }
 .error{
     color:#EE9972;
-}
-#details-btn{
-    padding:0.5em;
 }
 /*Confirmation Page*/
 #confirmation-page{
@@ -165,8 +170,54 @@ nav img {
     color:#EDEFEE;
 }
 #confirmation-page button{
-    padding:0.5em;
-    margin-bottom:0.5em;
-    margin-bottom:0.2rem;
-}
 
+}/*Footer*/
+footer{
+    background-color: #FBDABB;
+    border-top:2px solid black;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    width:100%;
+    margin-top:0.25rem;
+}
+footer > div{
+    margin:0.1rem 0;
+}
+footer img{
+    align-self:center;
+}
+.footer-links{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.footer-contact{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.footer-contact p{
+    font-weight: 600;;
+}
+.footer-links a{
+    font-weight:700;
+}
+footer li {
+  text-align: left;
+}
+footer img{
+    height:1.2rem;
+    width:auto;;
+}
+@media (max-width:668px){footer img{
+    height:1rem;
+    width:auto;;
+}
+}
+@media (max-width:500px){footer img{
+    height:0.7em;
+    width:auto;;
+}
+}

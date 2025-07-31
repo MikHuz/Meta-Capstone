@@ -4,6 +4,7 @@ import './css/index.css'
 import './css/App.css'
 import menu from '/src/assets/hamburger_menu.png'
 import logo from '/src/assets/Logo.png'
+import footer_logo from '/src/assets/favicon.png'
 import basket from '/src/assets/Basket.png'
 import restaurant from '/src/assets/restaurant.jpg'
 import restaurant_food from '/src/assets/restaurant_food.jpg'
@@ -14,7 +15,7 @@ import * as Yup from 'yup';
 function Header(props){
   return (<>
   <header>
-    <nav>
+    <nav id="header-nav">
     <ul>
       <li><a href=""><img src={menu}/></a></li>
       <li><a href=""><img src={logo}/></a></li>
@@ -55,7 +56,6 @@ function ReserveATable(props){
     return true;
   }
   return (<>
-  <main>
       <form className="table-selection-form" onSubmit={handleSubmit} method="GET">
         <h2 id="table-header">Select-A-Table</h2>
         <img id="img1"src={restaurant} alt="Restaurant" />
@@ -99,9 +99,8 @@ function ReserveATable(props){
         <div className='table-availability-box'>
         {(isFormValid() && isTableAvailable()) ? <h3>Available!</h3>:<h3>No Tables</h3>}
         </div>
-        <button id="reservation-btn"type="submit" disabled={!isFormValid()}><h3>Reserve Table</h3></button>
+        <button id="reservation-btn"type="submit" disabled={!isFormValid()}>Reserve Table</button>
       </form>
-  </main>
   </>)
 }
 
@@ -131,7 +130,7 @@ const handleSubmit = (e) =>{
   e.preventDefault();
   if(isFormFilled()){
     console.log("Customer Details submitted:", details);
-    navigate("/reserve/confirmation");
+    navigate("/reserve/payment");
   }
 }
   return(<>
@@ -177,37 +176,76 @@ const handleSubmit = (e) =>{
     <textarea id="requests" name="requests" placeholder="(Optional)"
               onChange={(e)=> setDetails({...details, [e.target.name]:e.target.value})}></textarea>
     </div>
-    <button id="details-btn" type="submit" disabled={!isFormFilled()}><h3>Book Reservation</h3></button>
+    <button id="details-btn" type="submit" disabled={!isFormFilled()}>Continue To Payment</button>
   </form>
   </>)
 }
 
+function Payment(props){
+  const navigate = useNavigate()
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+    console.log("Payment Confirmed")
+    navigate("/reserve/confirmation")
+  }
+  return (<>
+  <div id="payment-page">
+    <h2>Payment Page</h2>
+    <p>This is a placeholder for the payment processing page.</p>
+    <form>
+      <button id="payment-btn" type="button" onClick={(e)=> handleSubmit(e)}>Confirm Payment</button>
+    </form>
+  </div>
+  </>)
+}
+
 function Confirmation(props){
+  const navigate = useNavigate()
   return (<>
   <div id="confirmation-page">
   <h2>Reservation Confirmed!</h2>
   <span>Thank you for choosing Little Lemon. We look forward to serving you!</span>
-  <button>Home</button>
+  <button onClick={() => navigate('/reserve')}>Home</button>
   </div>
   </>)
 }
 function Footer(props){
   return (<>
-  <footer>
+  <footer id="footer-content">
+    <img src={footer_logo} alt="Little Lemon Logo" className="footer-logo"/>
+    <div className="footer-links">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Login</a></li>
+      </ul>
+    </div>
+    <div className="footer-contact">
+      <div><p>Contact Us:</p></div>
+      <p>Email: littlelemon@email.com</p>
+      <p>Phone: (123) 456-7890</p>
+      <p>Address: 123 Main St, Chicago, IL</p>
+    </div>
   </footer>
   </>)
 }
 function App() {
   const [count, setCount] = useState(0)
 return (<>
-  <Header/>
-  <Routes>
-    <Route path="/" element={<Navigate to="/reserve"/>}/>
-    <Route path="/reserve" element={<ReserveATable/>}/>
-    <Route path="/reserve/customerdetails" element={<CustomerDetails/>}/>
-    <Route path="/reserve/confirmation" element={<Confirmation/>}/>
-  </Routes>
-  <Footer/>
+  <div className="layout">
+      <Header />
+      <main className="content">
+        <Routes>
+          <Route path="/" element={<Navigate to="/reserve" />} />
+          <Route path="/reserve" element={<ReserveATable />} />
+          <Route path="/reserve/customerdetails" element={<CustomerDetails />} />
+            <Route path="/reserve/payment" element={<Payment/>} />
+          <Route path="/reserve/confirmation" element={<Confirmation />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
 </>)
 }
 
