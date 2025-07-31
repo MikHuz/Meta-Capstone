@@ -1,0 +1,223 @@
+/*Header*/
+header nav{
+  border:2px solid black;
+ height:10vh;
+ background-color: #FBDABB;
+ width:100%;
+}
+header nav ul{
+    display:flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items: center;
+    list-style-type: none;
+    height:100%;
+}
+header nav a{
+    display: flex;        
+    justify-content: center;  
+}
+header nav img {
+  height: auto;       
+  width: auto;       
+}
+.header-text{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+}
+.header-text> *{
+    margin:0 5%;
+}
+.header-text h1{
+    color:#F4CE14;
+}
+.header-text h2{
+    color:#EDEFEE;
+}
+/*Header*/
+/*Table Selection Page*/
+.table-selection-form{
+    width:70%;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    grid-template-rows: repeat(7,auto );
+    grid-gap: 10px;
+    justify-items: center;
+    justify-content: center;
+    grid-template-areas:
+    "table-header table-header"
+    "img1 img2"
+    "date-box time-box"
+    "guest-box guest-box"
+    "occasion-box occasion-box"
+    "preference-box preference-box"
+    "table-availability-box table-availability-box"
+    "reservation-button reservation-button";
+}
+@media (max-width: 668px){
+    .table-selection-form{width:90%;}
+}
+.form-box{
+    display:flex;
+    flex-direction: column;
+    row-gap: 10px;
+    width:100%;
+    min-width:0px;
+}
+#img1{
+    width:100%;
+    height:auto;
+    grid-area: img1;
+    border-radius: 16pt;
+}
+#img2{
+    width:100%;
+    height:auto;
+    grid-area: img2;
+    border-radius: 16pt;
+}
+#table-header{
+    grid-area: table-header;
+}
+.date-box{
+    grid-area: date-box;
+}
+.time-box{
+    grid-area: time-box;
+}
+.guest-box{
+    grid-area: guest-box;
+}
+.occasion-box{
+    grid-area: occasion-box;
+}
+.preference-box{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items:flex-start;
+    grid-area: preference-box;
+    width:100%;
+}
+.preference-box span{
+    color:#EDEFEE;
+    flex:1 1 100%;
+}
+.preference-box label{
+    color:black;
+    flex:0 1 auto;
+}
+.table-availability-box{
+    grid-area: table-availability-box;
+}
+#reservation-btn{
+    grid-area: reservation-button;
+}
+/*Table Selection Page*/
+/*Customer Details Page*/
+.customer-details-form{
+    width:60%;
+    margin:0 auto;
+    margin-top:10px;
+    border:2px solid black;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 16pt;
+    gap:0.1rem;
+}
+@media (max-width: 668px){
+    .customer-details-form{
+        width:100%;
+    }
+}
+.customer-details-form > div{
+   width:90%;
+}
+.customer-details-form .form-box input{
+   padding:0.25em;
+}
+.customer-details-form .form-box textarea{
+    height:7em;
+}
+.error{
+    color:#EE9972;
+}
+/*Confirmation Page*/
+#confirmation-page{
+    width:90%;
+    margin:0 auto;
+    margin-top:0.2rem;
+    background-color: #2E8B57;
+    border:2px solid black;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 16pt;
+    gap:10px;
+    text-align: center;
+}
+#confirmation-page h2{
+    margin-top:0.5em;
+    line-height:0;
+    margin-top:0.2rem;
+    line-height: 1;;
+    color:#EDEFEE;
+}
+#confirmation-page button{
+
+}/*Footer*/
+footer{
+    background-color: #FBDABB;
+    border-top:2px solid black;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    width:100%;
+    margin-top:0.25rem;
+}
+footer > div{
+    margin:0.1rem 0;
+}
+footer img{
+    align-self:center;
+}
+.footer-links{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.footer-contact{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.footer-contact p{
+    font-weight: 600;;
+}
+.footer-links a{
+    font-weight:700;
+}
+footer li {
+  text-align: left;
+}
+footer img{
+    height:1.2rem;
+    width:auto;;
+}
+@media (max-width:668px){footer img{
+    height:1rem;
+    width:auto;;
+}
+}
+@media (max-width:500px){footer img{
+    height:0.7em;
+    width:auto;;
+}
+}
