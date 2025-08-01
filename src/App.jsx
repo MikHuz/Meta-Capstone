@@ -1,5 +1,7 @@
 import { useState,useContext,useEffect,useRef} from 'react'
-import { Routes, Route,Navigate,Link,useNavigate} from 'react-router-dom';
+import { Routes, Route,Navigate,Link,useNavigate,useLocation} from 'react-router-dom';
+import { CustomerContext } from './CustomerContext';
+import { CustomerProvider } from './CustomerContext'; 
 import './css/index.css'
 import './css/App.css'
 import menu from '/src/assets/hamburger_menu.png'
@@ -16,11 +18,11 @@ import * as Yup from 'yup';
 function Header(props){
   return (<>
   <header>
-    <nav id="header-nav">
+    <nav id="header-nav" role="navigation" aria-label="Primary navigation">
     <ul>
-      <li><a href=""><img src={menu}/></a></li>
-      <li><a href=""><img src={logo}/></a></li>
-      <li><a href=""><img src={basket}/></a></li>
+      <li><a href="" area-label="Open Main Menu"><img src={menu} alt="Hamburger Icon"/></a></li>
+      <li><a href="/reserve" area-label="Go To Home Page"><img src={logo} alt="Little Lemon Logo"/></a></li>
+      <li><a href="" aria-label="Your Current Menu Cart"><img src={basket} alt="Basket Icon"/></a></li>
     </ul>
     </nav>
     <div className="header-text">
@@ -47,28 +49,27 @@ function ReserveATable(props){
     e.preventDefault();
     if(isFormValid() &  e.target.checkValidity()){
       console.log("Reservation submitted:", { date, time, guests, occasion });
-      navigate("/reserve/customerdetails");
+      navigate("/reserve/customerdetails", {state:{date:date,time:time,guests:guests}});
     }
-    
   }
   const isTableAvailable = () => {
     // Placeholder logic for table availability
     return true;
   }
   return (<>
-      <form className="table-selection-form" onSubmit={handleSubmit} method="GET">
-        <h2 id="table-header">Select-A-Table</h2>
-        <img id="img1"src={restaurant} alt="Restaurant" />
-        <img id="img2"src={mario_adrian_A}  alt="Mario and Adrian" />
-      
+      <form className="table-selection-form" onSubmit={handleSubmit} method="GET" aria-labelledby="table-header">
+        <h2 id="table-header">Reserve-A-Table</h2>
+          <img id="img1" src={restaurant} alt="Interior of Little Lemon restaurant" />
+          <img id="img2" src={mario_adrian_A} alt="Mario and Adrian, owners of Little Lemon" />
         <div className='form-box date-box'>
           <label htmlFor="date">Select Date</label>
           <input type="date" id="date" name="date" value={date} onChange={(e) => setDate(e.target.value)}required />
         </div>
    
         <div className='form-box time-box'>
-          <label htmlFor="time">Select Time</label>
-          <input type="time" id="time" name="time" value={time} onChange={(e) => setTime(e.target.value)}required/>
+          <label htmlFor="time">Select Time(9AM-8PM)</label>
+          <input type="time" id="time" name="time" value={time} step="1800" min="09:00" max="20:00"
+          onChange={(e) => setTime(e.target.value)}  onInvalid={e => alert("Please select a valid time in 30-minute intervals from 9 AM to 8 PM")}required/>
         </div>
 
         <div className='form-box guest-box'>
@@ -85,26 +86,45 @@ function ReserveATable(props){
             <option value="engagement">Engagement</option>
           </select>
         </div>
-        <div className='form-box preference-box'>
-          <span>Seating Preference</span>
-          <label>Indoor
-            <input type="radio" id="indoor" name="seating-preference" value="indoor" required 
-                   onChange={(e)=>{setSeatingPreference(e.target.value)}}/>
+         <fieldset className='form-box preference-box' style={{borderRadius:"16pt",border:"2px solid black", borderColor:"black"}}>
+          <legend className="call-to-attention" style={{color:"#EDEFEE"}}>Seating Preference</legend>
+          <label htmlFor="indoor">
+            <input
+              type="radio"
+              id="indoor"
+              name="seating-preference"
+              value="indoor"
+              checked={seatingPreference === 'indoor'}
+              onChange={(e) => setSeatingPreference(e.target.value)}
+              required
+            />
+            Indoor
           </label>
-          <label>Outdoor
-            <input type="radio" id="outdoor" name="seating-preference" value="outdoor" required
-                   onChange={(e)=>{setSeatingPreference(e.target.value)}}/>
+          <label htmlFor="outdoor">
+            <input
+              type="radio"
+              id="outdoor"
+              name="seating-preference"
+              value="outdoor"
+              checked={seatingPreference === 'outdoor'}
+              onChange={(e) => setSeatingPreference(e.target.value)}
+              required
+            />
+            Outdoor
           </label>
-        </div>
-        <div className='table-availability-box'>
-        {(isFormValid() && isTableAvailable()) ? <h3>Available!</h3>:<h3>No Tables</h3>}
+        </fieldset>
+        <div className='table-availability-box'  aria-atomic="true" aria-live="Assertive" role="status">
+          {(isFormValid() && isTableAvailable()) ? <h3>Available!</h3>:<h3>No Tables Available</h3>}
         </div>
         <button id="reservation-btn"type="submit" disabled={!isFormValid()}>Reserve Table</button>
       </form>
   </>)
 }
 
-function CustomerDetails(props){
+function CustomerDetails(props) {
+  const location = useLocation();
+  const { date, time, guests } = location.state;
+
   const [details, setDetails] = useState({
     firstName: '',
     lastName: '',
@@ -112,6 +132,7 @@ function CustomerDetails(props){
     phone: '',
     requests: ''
   });
+
   const [touched, setTouched] = useState({
     firstName: false,
     lastName: false,
@@ -119,67 +140,157 @@ function CustomerDetails(props){
     phone: false,
     requests: false
   });
-const navigate = useNavigate();
 
-const isFormFilled = ()=>{
-  console.log("FIlledForm?")
-  return (details.firstName.length >0 && details.lastName.length >0 && details.email.length >0 && details.phone.length >0)
+  const navigate = useNavigate();
+
+  const isFormFilled = () => {
+    return (
+      details.firstName.length > 0 &&
+      details.lastName.length > 0 &&
+      details.email.length > 0 &&
+      details.phone.length > 0
+    );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isFormFilled() && e.target.checkValidity()) {
+      console.log("Customer Details submitted:", details);
+      navigate("/reserve/payment");
+    }
+  };
+
+  return (
+    <>
+      <form
+        className="customer-details-form"
+        onSubmit={handleSubmit}
+        aria-labelledby="form-heading"
+        aria-describedby="reserve-reminder-message"
+      >
+        <div className="form-header">
+          <h2 id="form-heading">Customer Details</h2>
+          <p id="reserve-reminder-message">
+            Please provide your details to confirm the reservation at <span>{date}</span>, <span>{time}</span>, for <span>{guests}</span> guests.
+          </p>
+        </div>
+
+        <div className="form-box">
+          <label htmlFor="firstName" className="call-to-attention">
+            <sup>*</sup>First Name
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            placeholder="John"
+            value={details.firstName}
+            required
+            aria-describedby={touched.firstName && details.firstName.length === 0 ? "firstNameError" : undefined}
+            onChange={(e) =>setDetails({ ...details, [e.target.name]: e.target.value })}
+            onBlur={(e) =>setTouched({ ...touched, [e.target.name]: true })}
+          />
+          {touched.firstName && details.firstName.length === 0 && ( <span className="error" id="firstNameError">First Name is required</span>)}
+        </div>
+
+        <div className="form-box">
+          <label htmlFor="lastName" className="call-to-attention">
+            <sup>*</sup>Last Name
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            placeholder="Smith"
+            value={details.lastName}
+            required
+            aria-describedby={touched.lastName && details.lastName.length === 0 ? "lastNameError" : undefined}
+            onChange={(e) =>setDetails({ ...details, [e.target.name]: e.target.value })}
+            onBlur={(e) =>setTouched({ ...touched, [e.target.name]: true })}
+          />
+          {touched.lastName && details.lastName.length === 0 && (
+            <span className="error" id="lastNameError">
+              Last Name is required
+            </span>
+          )}
+        </div>
+
+        <div className="form-box">
+          <label htmlFor="email" className="call-to-attention">
+            <sup>*</sup>Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="email@example.com"
+            required
+            aria-describedby={touched.email && details.email.length === 0 ? "emailError" : undefined}
+            onChange={(e) =>
+              setDetails({ ...details, [e.target.name]: e.target.value })
+            }
+            onBlur={(e) =>
+              setTouched({ ...touched, [e.target.name]: true })
+            }
+          />
+          {touched.email && details.email.length === 0 && (
+            <span className="error" id="emailError">
+              Email is Required
+            </span>
+          )}
+        </div>
+
+        <div className="form-box">
+          <label htmlFor="phone" className="call-to-attention">
+            <sup>*</sup>Phone Number
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="123-456-7890"
+            pattern="\d{3}-\d{3}-\d{4}"
+            required
+            aria-describedby={touched.phone && details.phone.length === 0 ? "phoneError" : undefined}
+            onChange={(e) =>
+              setDetails({ ...details, [e.target.name]: e.target.value })
+            }
+            onBlur={(e) =>
+              setTouched({ ...touched, [e.target.name]: true })
+            }
+          />
+          {touched.phone && details.phone.length === 0 && (
+            <span className="error" id="phoneError">
+              Phone is Required
+            </span>
+          )}
+        </div>
+
+        <div className="form-box">
+          <label htmlFor="requests">Special Requests</label>
+          <textarea
+            id="requests"
+            name="requests"
+            placeholder="(Optional)"
+            aria-label="Special requests or additional notes"
+            onChange={(e) =>
+              setDetails({ ...details, [e.target.name]: e.target.value })
+            }
+          />
+        </div>
+
+        <button
+          id="details-btn"
+          type="submit"
+          disabled={!isFormFilled()}
+          aria-label="Continue to payment"
+        >
+          Continue To Payment
+        </button>
+      </form>
+    </>
+  );
 }
-const handleSubmit = (e) =>{
-  e.preventDefault();
-  if(isFormFilled() && e.target.checkValidity()){
-    console.log("Customer Details submitted:", details);
-    navigate("/reserve/payment");
-  }
-   
-}
-  return(<>
-  <form className="customer-details-form" onSubmit={handleSubmit}>
-    <div className="form-header">
-      <h2>Customer Details</h2>
-      <p>Please provide your details to confirm the reservation</p>
-    </div>
-    <div className="form-box">
-    <label htmlFor="firstName" className='call-to-attention'><sup>*</sup>First Name</label>
-    <input type="text" id="firstName" name="firstName" placeholder="John" value={details.firstName}required 
-           onChange={(e)=> setDetails({...details, [e.target.name]:e.target.value})}
-           onBlur={(e) => setTouched({...touched,[e.target.name]:true})}/>
-    {touched.firstName && details.firstName.length === 0 && <span className="error">First Name is required</span>}
-    </div>
-
-    <div className="form-box">
-    <label htmlFor="lastName"  className='call-to-attention'><sup>*</sup>Last Name</label>
-    <input type="text" id="lastName" name="lastName" placeholder="Smith" value={details.lastName} required 
-           onChange={(e)=> setDetails({...details, [e.target.name]:e.target.value})}
-           onBlur={(e) => setTouched({...touched,[e.target.name]:true})}/>
-    {touched.lastName && details.lastName.length === 0 && <span className="error">Last Name is required</span>}
-    </div>
-
-    <div className="form-box">
-    <label htmlFor="email"  className='call-to-attention'><sup>*</sup>Email</label>
-    <input type="email" id="email" name="email" placeholder="email@example.com" required 
-           onChange={(e)=> setDetails({...details, [e.target.name]:e.target.value})}
-           onBlur={(e) => setTouched({...touched,[e.target.name]:true})}/>
-    {touched.email && details.email.length===0 && <span className="error">Email is Required</span>}
-    </div>
-
-    <div className="form-box">
-    <label htmlFor="phone"  className='call-to-attention'><sup>*</sup>Phone Number</label>
-    <input type="tel" id="phone" name="phone" placeholder="123-456-7890"  pattern="\d{3}-\d{3}-\d{4}" required 
-           onChange={(e)=> setDetails({...details, [e.target.name]:e.target.value})}
-           onBlur={(e) => setTouched({...touched,[e.target.name]:true})}/>
-    {touched.phone && details.phone.length===0 && <span className="error">Phone is Required</span>}
-    </div>
-
-    <div className="form-box">
-    <label htmlFor="requests" >Special Requests</label>
-    <textarea id="requests" name="requests" placeholder="(Optional)"
-              onChange={(e)=> setDetails({...details, [e.target.name]:e.target.value})}></textarea>
-    </div>
-    <button id="details-btn" type="submit" disabled={!isFormFilled()}>Continue To Payment</button>
-  </form>
-  </>)
-} 
 function Payment(props) {
   const navigate = useNavigate();
   const [paymentDetails, setPaymentDetails] = useState({
@@ -225,88 +336,126 @@ function Payment(props) {
   };
 
   return (
-    <div id="payment-page">
-      <form id="payment-form" onSubmit={handleSubmit}>
-        <div className='form-header'>
-          <h2>Payment Details</h2>
-          <p>Please add your payment method.</p>
+   <div id="payment-page">
+  <form id="payment-form" onSubmit={handleSubmit} aria-labelledby="payment-header">
+    <div className='form-header'>
+      <h2 id="payment-header">Payment Details</h2>
+      <p id="payment-desc">Please add your payment method.</p>
+    </div>
+
+    <div className="payment-input">
+      <label htmlFor="card-number"><sup>*</sup>Card Number</label>
+      <input
+        type="text"
+        id="card-number"
+        name="cardNumber"
+        placeholder="xxxx-xxxx-xxxx-xxxx"
+        required
+        pattern="\d{4}([\s\-_]?\d{4}){3}"
+        title="Enter a 16-digit card number"
+        aria-describedby="card-error"
+        value={paymentDetails.cardNumber}
+        onChange={handleChange}
+        onBlur={e => setTouched({ ...touched, [e.target.name]: true })}
+      />
+      <div className="payment-error" id="card-error" aria-live="polite">
+        {touched.cardNumber && paymentDetails.cardNumber.length === 0 && (
+          <span className="error">Please enter a valid card number</span>
+        )}
+      </div>
+    </div>
+
+    <div className="payment-input">
+      <label htmlFor="card-name"><sup>*</sup>Name on Card</label>
+      <input
+        type="text"
+        id="card-name"
+        name="cardName"
+        placeholder="Name on Card"
+        required
+        title="Enter the name as it appears on your card"
+        aria-describedby="name-error"
+        value={paymentDetails.cardName}
+        onChange={handleChange}
+        onBlur={e => setTouched({ ...touched, [e.target.name]: true })}
+      />
+      <div className="payment-error" id="name-error" aria-live="polite">
+        {touched.cardName && paymentDetails.cardName.length === 0 && (
+          <span className="error">Please enter the name on your card</span>
+        )}
+      </div>
+    </div>
+
+    <div className="payment-input-row">
+      <div className="payment-input">
+        <label htmlFor="expiry-date"><sup>*</sup>Exp. Date</label>
+        <input
+          type="text"
+          id="expiry-date"
+          name="expiryDate"
+          placeholder="MM/YY"
+          required
+          pattern="(0[1-9]|1[0-2])\/?([0-9]{2})"
+          title="Enter the card expiry date in MM/YY format"
+          aria-describedby="expiry-error"
+          value={paymentDetails.expiryDate}
+          onChange={handleChange}
+          onBlur={e => setTouched({ ...touched, [e.target.name]: true })}
+        />
+        <div className="payment-error" id="expiry-error" aria-live="polite">
+          {touched.expiryDate && paymentDetails.expiryDate.length === 0 && (
+            <span className="error">Please enter a valid expiry date</span>)}
         </div>
+      </div>
 
-        <div className="payment-input">
-          <label htmlFor="card-number"><sup>*</sup>Card Number</label>
-          <input type="text" id="card-number" name="cardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" required 
-            pattern="\d{4}([\s\-_]?\d{4}){3}"
-            title="Enter a 16-digit card number"
-            value={paymentDetails.cardNumber}
-            onChange={handleChange}
-            onBlur={e =>(setTouched({...touched,[e.target.name]:true}))}
-          />
-          <div className="payment-error" id="card-error" aria-live="polite">
-            {touched.cardNumber && paymentDetails.cardNumber.length===0 && <span className="error">Please enter a valid card number</span>}
-          </div>
+      <div className="payment-input">
+        <label htmlFor="cvv"><sup>*</sup>CVV</label>
+        <input
+          type="text"
+          id="cvv"
+          name="cvv"
+          placeholder="xxx"
+          required
+          pattern="\d{3}"
+          title="Enter the 3-digit CVV code"
+          aria-describedby="cvv-error"
+          value={paymentDetails.cvv}
+          onChange={handleChange}
+          onBlur={e => setTouched({ ...touched, [e.target.name]: true })}
+        />
+        <div className="payment-error" id="cvv-error" aria-live="polite">
+          {touched.cvv && paymentDetails.cvv.length === 0 && (
+            <span className="error">Please enter a valid CVV</span>
+          )}
         </div>
+      </div>
 
-        <div className="payment-input">
-          <label htmlFor="card-name"><sup>*</sup>Name on Card</label>
-          <input type="text" id="card-name" name="cardName" placeholder="Name on Card" required title="Enter the name as it appears on your card"
-            value={paymentDetails.cardName}
-            onChange={handleChange}
-            onBlur={e =>(setTouched({...touched,[e.target.name]:true}))}
-          />
-          <div className="payment-error" id="name-error" aria-live="polite">
-            {touched.cardName && paymentDetails.cardName.length===0 && <span className="error">Please enter the name on your card</span>}
-          </div>
-        </div>
-
-        <div className="payment-input-row">
-          <div className="payment-input">
-            <label htmlFor="expiry-date"><sup>*</sup>Exp. Date</label>
-            <input type="text"id="expiry-date" name="expiryDate"placeholder="MM/YY" required pattern="(0[1-9]|1[0-2])\/?([0-9]{2})"
-              title="Enter the card expiry date in MM/YY format"
-              value={paymentDetails.expiryDate}
-              onChange={handleChange}
-              onBlur={e =>(setTouched({...touched,[e.target.name]:true}))}
-            />
-            <div className="payment-error" id="expiry-error" aria-live="polite">
-              {touched.expiryDate && paymentDetails.expiryDate.length===0 && <span className="error">Please enter a valid expiry date</span>}
-            </div>
-          </div>
-
-          <div className="payment-input">
-            <label htmlFor="cvv"><sup>*</sup>CVV</label>
-            <input type="text" id="cvv" name="cvv" placeholder="xxx" required pattern="\d{3}"
-              title="Enter the 3-digit CVV code"
-              value={paymentDetails.cvv}
-              onChange={handleChange}
-              onBlur={e =>(setTouched({...touched,[e.target.name]:true}))}
-            />
-            <div className="payment-error" id="cvv-error" aria-live="polite">
-              {touched.cvv && paymentDetails.cvv.length===0 &&<span className="error">Please enter a valid CVV</span>}
-            </div>
-          </div>
-
-          <div className="payment-input">
-            <label style={{ visibility: "hidden" }}>Hidden Text</label>
-            <img src={credit_card} id="credit-logo" alt="Credit Card Icon" />
-          </div>
-        </div>
-
-        <div className="payment-confirmation">
+      <div className="payment-input">
+        <label style={{ visibility: "hidden" }}>Hidden Text</label>
+        <img
+          src={credit_card}
+          id="credit-logo"
+          alt="Credit card icon representing secure payment"
+        />
+      </div>
+    </div>
+    <div className="payment-confirmation">
           <label htmlFor="email">Send me a Confirmation Via Email</label>
           <input type="radio" id="email" name="confirmationPreference" value="email"
             onChange={handleChange}
             required
           />
-        </div>
-
-        <div className="payment-confirmation">
-          <label htmlFor="phone">Send me a Confirmation Via Text</label>
-          <input type="radio" id="phone" name="confirmationPreference" value="text"
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button id="payment-btn" type="submit" disabled={!isFormFilled()}>Confirm Payment</button>
+    </div>
+    <div className="payment-confirmation">
+        <label htmlFor="phone">Send me a Confirmation Via Text</label>
+        <input type="radio" id="phone" name="confirmationPreference" value="text"
+          onChange={handleChange}
+          required
+        />
+      </div>
+        <button id="payment-btn" type="submit" disabled={!isFormFilled()} aria-disabled={!isFormFilled()}>
+          Confirm Payment
+        </button>
       </form>
     </div>
   );
@@ -346,6 +495,7 @@ function Footer(props){
 function App() {
   const [count, setCount] = useState(0)
 return (<>
+<CustomerProvider>
   <div className="layout">
       <Header />
       <main className="content">
@@ -359,6 +509,7 @@ return (<>
       </main>
       <Footer />
     </div>
+</CustomerProvider>
 </>)
 }
 
