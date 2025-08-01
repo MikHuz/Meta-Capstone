@@ -27,14 +27,15 @@ export function CustomerProvider({ children }) {
   });
 
   // Helper to update nested parts of customerDetails
-  const updateTable = (newTableData) => {
-    setCustomerDetails(prev => ({
-      ...prev,
+  function updateTable(newTableData) {
+    alert("Inside UpdateTable")
+    setCustomerDetails({
+      ...customerDetails,
       table: {
-        ...prev.table,
+        ...customerDetails.table,
         ...newTableData,
       }
-    }));
+    })
   };
 
   const updateDetails = (newDetailsData) => {

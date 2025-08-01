@@ -33,11 +33,14 @@ function Header(props){
   </>)
 }
 function ReserveATable(props){
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [guests, setGuests] = useState(1);
-  const [occasion, setOccasion] = useState("");
-  const [seatingPreference, setSeatingPreference] = useState("");
+  const { customerDetails, updateTable} = useContext(CustomerContext);
+  const { table } = customerDetails;
+  console.log("TABLE:", table);
+  const [date, setDate] = useState(table.date !== '' ? table.date : '');
+  const [time, setTime] = useState(table.time !== '' ? table.time : '');
+  const [guests, setGuests] = useState(table.guests !== '' ? table.guests : 1);
+  const [occasion, setOccasion] = useState(table.occasion !== '' ? table.occasion : '');
+  const [seatingPreference, setSeatingPreference] = useState(table.seatingPreference !== '' ? table.seatingPreference : '');
   const navigate = useNavigate();
   const isFormValid = ()=>{
     if(date && time && guests && occasion && seatingPreference){
@@ -49,6 +52,7 @@ function ReserveATable(props){
     e.preventDefault();
     if(isFormValid() &  e.target.checkValidity()){
       console.log("Reservation submitted:", { date, time, guests, occasion });
+      updateTable({date,time,guests,occasion,seatingPreference})
       navigate("/reserve/customerdetails", {state:{date:date,time:time,guests:guests}});
     }
   }
@@ -124,14 +128,17 @@ function ReserveATable(props){
 function CustomerDetails(props) {
   const location = useLocation();
   const { date, time, guests } = location.state;
-
-  const [details, setDetails] = useState({
+  const {customerDetails,updateDetails} = useContext(CustomerContext)
+  const userDetails = customerDetails.details;
+  const [details, setDetails] = useState(userDetails !== '' ? userDetails:
+    {
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     requests: ''
   });
+  console.log("This IS FROM CONTEXT OR NOT: ",details)
 
   const [touched, setTouched] = useState({
     firstName: false,
@@ -155,6 +162,7 @@ function CustomerDetails(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormFilled() && e.target.checkValidity()) {
+      updateDetails(details)
       console.log("Customer Details submitted:", details);
       navigate("/reserve/payment");
     }
@@ -223,6 +231,7 @@ function CustomerDetails(props) {
             type="email"
             id="email"
             name="email"
+            value={details.email}
             placeholder="email@example.com"
             required
             aria-describedby={touched.email && details.email.length === 0 ? "emailError" : undefined}
@@ -248,6 +257,7 @@ function CustomerDetails(props) {
             type="tel"
             id="phone"
             name="phone"
+            value={details.phone}
             placeholder="123-456-7890"
             pattern="\d{3}-\d{3}-\d{4}"
             required
@@ -271,6 +281,7 @@ function CustomerDetails(props) {
           <textarea
             id="requests"
             name="requests"
+            value={details.requests}
             placeholder="(Optional)"
             aria-label="Special requests or additional notes"
             onChange={(e) =>
@@ -279,11 +290,7 @@ function CustomerDetails(props) {
           />
         </div>
 
-        <button
-          id="details-btn"
-          type="submit"
-          disabled={!isFormFilled()}
-          aria-label="Continue to payment"
+        <button id="details-btn" type="submit" disabled={!isFormFilled()} aria-label="Continue to payment"
         >
           Continue To Payment
         </button>
@@ -293,13 +300,9 @@ function CustomerDetails(props) {
 }
 function Payment(props) {
   const navigate = useNavigate();
-  const [paymentDetails, setPaymentDetails] = useState({
-    cardNumber: '',
-    cardName: '',
-    expiryDate: '',
-    cvv: '',
-    confirmationPreference: ''
-  });
+  const { customerDetails, updatePayment,updateDetails,updateTable} = useContext(CustomerContext);
+  const [paymentDetails, setPaymentDetails] = useState(customerDetails.payment);
+  console.log(paymentDetails)
   const [touched,setTouched]=useState({
     cardNumber: false,
     cardName: false,
@@ -324,12 +327,16 @@ function Payment(props) {
       [name]:value
     }));
     setTouched({...touched,[name]:true})
+    updatePayment(paymentDetails)
    
   };
   const handleSubmit = (e) => {
   e.preventDefault();
     if (e.target.checkValidity()){
       console.log("Payment Confirmed", paymentDetails);
+      updatePayment({cardNumber: '', cardName: '', expiryDate: '', cvv: '', confirmationPreference: ''});
+      updateDetails({firstName: '',lastName: '',email: '',phone: '',requests: ''});
+      updateTable({date: '',time: '',guests: 1, occasion: '',seatingPreference: ''});
       navigate("/reserve/confirmation");
     }
 
