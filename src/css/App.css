@@ -161,17 +161,16 @@ header nav img {
     gap:0.1rem;
 }
 @media (max-width: 768px){#payment-form{width:100%;}}
+
 .payment-input{
     width:95%;
     display:flex;
     flex-direction: column; 
     align-items:flex-start;
-    border:2px solid black;
     row-gap:5px;
 }
 .payment-input>*{width:100%;flex-grow:0}
 .payment-input input{
-    border-bottom:2px solid black;
     padding:1em;
     text-align: left
 }
@@ -180,33 +179,33 @@ header nav img {
 }
 .payment-input-row{
     display:flex;
-    bordeR:2px solid black;
     flex-direction: row;
-     width:95%;
-     justify-content: space-evenly;
+    width:95%;
+    justify-content: space-evenly;
+    column-gap: 10px;;
 }
 @media (max-width: 900px) {
     .payment-input-row  .error{
        font: 500 calc(1rem * 0.25125) 'karla', sans-serif;
     }
 }
-.payment-input-row > .payment-input{
+.payment-input-row > .payment-input{/*Three columns on Page*/
     display:flex;
     flex-direction: column; 
     align-items:flex-start;
-    border:2px solid black;
+   
     row-gap:5px;
 }
 .payment-input:last-child{
-    align-items: center;
+    align-items: left;
 }
 #credit-logo{
       background-color: white;
+      border: 2px solid black;
       border-radius: 16pt;
       height:46.5px;
       padding:6px;
-      width:auto;
-      border:2px solid black;
+      width:auto;  
 }
 @media (max-width:768px){#credit-logo{height:41.5px;}}
 @media (max-width:668px){#credit-logo{height:39px;}}
