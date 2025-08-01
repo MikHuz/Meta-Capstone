@@ -9,6 +9,7 @@ import basket from '/src/assets/Basket.png'
 import restaurant from '/src/assets/restaurant.jpg'
 import restaurant_food from '/src/assets/restaurant_food.jpg'
 import mario_adrian_A from '/src/assets/Mario and Adrian A.jpg'
+import credit_card from '/src/assets/creditcard.png'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -190,9 +191,57 @@ function Payment(props){
   }
   return (<>
   <div id="payment-page">
-    <h2>Payment Page</h2>
-    <p>This is a placeholder for the payment processing page.</p>
-    <form>
+    <form id="payment-form" onSubmit={(e)=> handleSubmit(e)}>
+      <div className='form-header'>
+        <h2>Payment Page</h2>
+        <p>This is a placeholder for the payment processing page.</p>
+      </div>
+      <div className="payment-input">
+        <label htmlFor="card-number"><sup>*</sup>Card Number</label>
+        <input type="text" id="card-number" name="card-number" placeholder="xxxx-xxxx-xxxx-xxxx" required 
+               title="Enter a 16-digit card number (spaces or dashes optional)"pattern="(?:\d{4}[- ]?){3}\d{4}"/>
+        <div className="payment-error" id="card-error" aria-live="polite">
+          <span className="error">Please enter a valid card number</span>
+        </div>
+      </div>
+      <div className="payment-input">
+        <label htmlFor="card-name"><sup>*</sup>Name on Card</label>
+        <input type="text" id="card-name" name="card-name" placeholder="Name on Card" required
+               title="Enter the name as it appears on your card"/>
+        <div className="payment-error" id="name-error" aria-live="polite">
+          <span className="error">Please enter the name on your card</span> 
+        </div>
+      </div>
+      <div className="payment-input-row">
+        <div className="payment-input">
+          <label htmlFor="expiry-date"><sup>*</sup>Exp. Date</label>
+          <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required
+                title="Enter the card expiry date in MM/YY format" pattern="(0[1-9]|1[0-2])\/?([0-9]{2})"/>
+          <div className="payment-error" id="expiry-error" aria-live="polite">
+            <span className="error">Please enter a valid expiry date</span>
+          </div>
+        </div>
+         <div className="payment-input">
+          <label htmlFor="cvv"><sup>*</sup>CVV</label>
+          <input type="text" id="cvv" name="cvv" placeholder="xxx" required
+                title="Enter the 3-digit CVV code on the back of your card" pattern="\d{3}"/>
+          <div className="payment-error" id="cvv-error" aria-live="polite">
+            <span className="error">Please enter a valid CVV</span>
+          </div>
+        </div>
+        <div className="payment-input">
+          <label style={{visibility:"hidden"}}>Hidden Text</label>{/* Empty label for alignment */}
+          <img src={credit_card} id="credit-logo"alt="Credit Card Icon"/>
+        </div>
+      </div>
+      <div className="payment-confirmation">
+        <label htmlFor="email">Send me a Confirmation Via Email</label>
+        <input type="radio" id="email" name="confirmation-preference" required/>
+      </div>
+      <div className="payment-confirmation">
+        <label htmlFor="email">Send me a Confirmation Via Text</label>
+        <input type="radio" id="phone" name="confirmation-preference" required/>
+      </div>
       <button id="payment-btn" type="button" onClick={(e)=> handleSubmit(e)}>Confirm Payment</button>
     </form>
   </div>
