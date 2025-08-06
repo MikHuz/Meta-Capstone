@@ -159,9 +159,6 @@ header nav img {
 .error{
     color:#EE9972;
 }
-#details-btn{
-    width:90%;
-}
 /*Customer Details Page*/
 /*Payment Page*/  
 #payment-form{
@@ -236,9 +233,6 @@ header nav img {
     height:fit-content;
     font-size:10px;
 }
-#payment-btn{
-    width:95%;
-}
 /*Payment Page*/ 
 /*Confirmation Page*/
 #confirmation-page{
@@ -261,6 +255,9 @@ header nav img {
     margin-top:0.2rem;
     line-height: 1;;
     color:#EDEFEE;
+}
+#home-btn{
+    width:50%;
 }
 /*Confirmation Page*/ 
 /*Footer*/

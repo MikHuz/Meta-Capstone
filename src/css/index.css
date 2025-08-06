@@ -128,4 +128,21 @@ a:hover{
    transition:0.3s;
 }
 
+.buttons{/*Back with Continue button*/
+  width:95%;
+  display:flex;
+  flex-direction: row;
+  column-gap:0.1rem;
+}
+.buttons button:first-child{
+    background-color: #EE9972;
+    flex:1 1 35%;
+}
+.buttons button:last-child{
+    flex:1 1 65%;
+}
+.buttons button:last-child:hover{
+    flex:1 1 65%;
+    transform:scale(1.03)
+}
 

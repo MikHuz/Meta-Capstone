@@ -120,14 +120,13 @@ function ReserveATable(props){
         <div className='table-availability-box'  aria-atomic="true" aria-live="Assertive" role="status">
           {(isFormValid() && isTableAvailable()) ? <h3>Available!</h3>:<h3>No Tables Available</h3>}
         </div>
-        <button id="reservation-btn"type="submit" disabled={!isFormValid()}>Reserve Table</button>
+        <button id="reservation-btn"type="submit" disabled={!isFormValid()}>Select Table</button>
       </form>
   </>)
 }
 
 function CustomerDetails(props) {
   const location = useLocation();
-  const { date, time, guests } = location.state;
   const {customerDetails,updateDetails} = useContext(CustomerContext)
   const userDetails = customerDetails.details;
   const [details, setDetails] = useState(userDetails !== '' ? userDetails:
@@ -138,6 +137,7 @@ function CustomerDetails(props) {
     phone: '',
     requests: ''
   });
+  const { date, time, guests } = customerDetails.table;
   console.log("This IS FROM CONTEXT OR NOT: ",details)
 
   const [touched, setTouched] = useState({
@@ -289,11 +289,14 @@ function CustomerDetails(props) {
             }
           />
         </div>
-
-        <button id="details-btn" type="submit" disabled={!isFormFilled()} aria-label="Continue to payment"
-        >
-          Continue To Payment
-        </button>
+        <div className='buttons'>
+          <button id="back-btn" type="button" onClick={() => navigate("/reserve")}>
+            Back
+          </button>
+          <button id="details-btn" type="submit" disabled={!isFormFilled()} aria-label="Continue to payment">
+            Continue To Payment
+          </button>
+        </div>
       </form>
     </>
   );
@@ -460,9 +463,14 @@ function Payment(props) {
           required
         />
       </div>
+      <div className='buttons'>
+          <button id="back-btn" type="button" onClick={() => navigate("/reserve/customerdetails")}>
+            Back
+          </button>
         <button id="payment-btn" type="submit" disabled={!isFormFilled()} aria-disabled={!isFormFilled()}>
-          Confirm Payment
+          Make Reservation
         </button>
+        </div>
       </form>
     </div>
   );
@@ -474,7 +482,7 @@ function Confirmation(props){
   <div id="confirmation-page">
   <h2>Reservation Confirmed!</h2>
   <span>Thank you for choosing Little Lemon. We look forward to serving you!</span>
-  <button onClick={() => navigate('/reserve')}>Home</button>
+  <button id="home-btn"onClick={() => navigate('/reserve')}>Home</button>
   </div>
   </>)
 }
@@ -484,7 +492,7 @@ function Footer(props){
     <img src={footer_logo} alt="Little Lemon Logo" className="footer-logo"/>
     <div className="footer-links">
       <ul>
-        <li><a href="#">Home</a></li>
+        <li><a href="/reserve">Home</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
         <li><a href="#">Login</a></li>
