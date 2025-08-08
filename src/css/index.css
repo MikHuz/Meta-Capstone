@@ -17,7 +17,7 @@ html{
     background-color: #495E57;
     min-height: 100vh;
     font-size:85px/*64pt for largest font size according to style guide*/
-    /*All fonts will use fractions of this size, which correspond to the listed pt size*/
+    /*All fonts will use fractions of this size, which closely correspond to the listed pt size*/
 }
 body{
   min-height: 100%;
@@ -25,7 +25,7 @@ body{
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* ensures full viewport height */
+  min-height: 100vh;
 }
 .content {
   flex: 1; 
@@ -42,7 +42,8 @@ p {font: 400 calc(1rem * 0.25) 'Karla', sans-serif; line-height: 1.5;/* Paragrap
 a{font: 500 calc(1rem * 0.28125) 'karla', sans-serif;color:black;  transition:0.3s;}
 span{font: 500 calc(1rem * 0.28125) 'karla', sans-serif;}
 label{font: 500 calc(1rem * 0.28125) 'karla', sans-serif; color:#EDEFEE; /* 18pt */}
-input, textarea,select{font: 400 calc(1rem * 0.25) 'Karla', sans-serif; 
+input, textarea,select{
+  font: 400 calc(1rem * 0.25) 'Karla', sans-serif; 
   border-radius: 16pt;line-height: 1.5; 
   border:1.5pt solid black; 
   height:calc(1rem * 0.25 *2);/*16pt*/
@@ -59,7 +60,6 @@ button{
   margin-bottom:0.1rem;
   transition:0.2s;
 }
-
 sup{
   vertical-align: text-top;
   color:#EE9972;
@@ -74,31 +74,27 @@ input[type="radio"]{
 }
 @media (max-width: 768px) {
   html {
-    font-size: 75px; /* ~52.5pt */
+    font-size: 75px; 
   }
 }
 @media (max-width: 668px) {
   html {
-    font-size: 70px; /* ~52.5pt */
+    font-size: 70px; 
   }
 }
 @media (max-width: 500px) {
-  input[type="radio"]{
-      transform:scale(1.2);
-  }
   html {
     font-size: 60px; /* ~45pt */
   }
+  input[type="radio"]{
+      transform:scale(1.2);
+  }
 }
 @media (max-width: 402px) {
-  html {
-    font-size: 56px; /* ~42pt */
-  }
+  html {font-size: 56px; /* ~42pt */}
 }
 @media (max-width: 356px) {
-  html {
-    font-size: 48px; /* ~36pt */
-  }
+  html {font-size: 48px; /* ~36pt */}
 }
 
 /*PSuedo-class styles*/
@@ -109,7 +105,7 @@ button:hover{
 input:focus{
   border:3px solid #F4CE14;
   outline:none;
- transform:scale(1.02)
+  transform:scale(1.02)
 }
 input[type="radio"]:focus{
    transform:scale(1.5)
@@ -125,10 +121,10 @@ textarea:focus{
 }
 a:hover{
   transform:scale(1.2);
-   transition:0.3s;
+  transition:0.3s;
 }
 
-.buttons{/*Back with Continue button*/
+.buttons{/*Back button with Continue/callToAction button Container*/
   width:95%;
   display:flex;
   flex-direction: row;

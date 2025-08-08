@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useState,useContext,useEffect,useRef} from 'react'
 import { Routes, Route,Navigate,Link,useNavigate,useLocation} from 'react-router-dom';
 import { CustomerContext } from '../CustomerContext';
@@ -6,19 +7,21 @@ import restaurant from '/src/assets/restaurant.jpg'
 import restaurant_food from '/src/assets/restaurant_food.jpg'
 import mario_adrian_A from '/src/assets/Mario and Adrian A.jpg'
 
-export default function ReserveATable(props){
+function ReserveATable({availableTimes,updateTimes}){
   const { customerDetails, updateTable} = useContext(CustomerContext);
   const { table } = customerDetails;
-  console.log("TABLE:", table);
   const [date, setDate] = useState(table.date !== '' ? table.date : '');
   const [time, setTime] = useState(table.time !== '' ? table.time : '');
   const [guests, setGuests] = useState(table.guests !== '' ? table.guests : 1);
   const [occasion, setOccasion] = useState(table.occasion !== '' ? table.occasion : '');
   const [seatingPreference, setSeatingPreference] = useState(table.seatingPreference !== '' ? table.seatingPreference : '');
+  const timeOptions = ["9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM","6:30 PM","7:00 PM","7:30 PM","8:00 PM"];
   const navigate = useNavigate();
+  console.log("TABLE:", table);
+  console.log(date,time,guests,occasion,seatingPreference)
   const isFormValid = ()=>{
     if(date && time && guests && occasion && seatingPreference){
-      return true
+      return true/*Checks if form is filled, html runs native validation*/
     }
     return false
   }
@@ -31,23 +34,31 @@ export default function ReserveATable(props){
     }
   }
   const isTableAvailable = () => {
-    // Placeholder logic for table availability
+    // Placeholder logic for real table availability, is called upon every form entry  like isFormValid
     return true;
   }
   return (<>
       <form className="table-selection-form" onSubmit={handleSubmit} method="GET" aria-labelledby="table-header">
         <h2 id="table-header">Reserve-A-Table</h2>
-          <img id="img1" src={restaurant} alt="Interior of Little Lemon restaurant" />
-          <img id="img2" src={mario_adrian_A} alt="Mario and Adrian, owners of Little Lemon" />
+        <img id="img1" src={restaurant} alt="Interior of Little Lemon restaurant" />
+        <img id="img2" src={mario_adrian_A} alt="Mario and Adrian, owners of Little Lemon" />
+
         <div className='form-box date-box'>
           <label htmlFor="date">Select Date</label>
-          <input type="date" id="date" name="date" value={date} onChange={(e) => setDate(e.target.value)}required />
+          <input type="date" id="date" name="date" value={date} 
+           onChange={(e) => {
+              setDate(e.target.value);updateTimes({type:"date",date:e.target.value } )}} 
+           required />
         </div>
    
         <div className='form-box time-box'>
           <label htmlFor="time">Select Time(9AM-8PM)</label>
-          <input type="time" id="time" name="time" value={time} step="1800" min="09:00" max="20:00"
-          onChange={(e) => setTime(e.target.value)}  onInvalid={e => alert("Please select a valid time in 30-minute intervals from 9 AM to 8 PM")}required/>
+          <select value={time} id="time" name="time" onChange={(e) => setTime(e.target.value)} required>
+            <option value="">Select A Time</option>
+            {timeOptions.map((time)=>{
+              return <option key={time} value={time}>{time}</option>
+            })}
+          </select>
         </div>
 
         <div className='form-box guest-box'>
@@ -64,7 +75,8 @@ export default function ReserveATable(props){
             <option value="engagement">Engagement</option>
           </select>
         </div>
-         <fieldset className='form-box preference-box' style={{borderRadius:"16pt",border:"2px solid black", borderColor:"black"}}>
+
+        <fieldset className='form-box preference-box' style={{borderRadius:"16pt",border:"2px solid black", borderColor:"black"}}>
           <legend className="call-to-attention" style={{color:"#EDEFEE"}}>Seating Preference</legend>
           <label htmlFor="indoor">
             <input
@@ -91,10 +103,12 @@ export default function ReserveATable(props){
             Outdoor
           </label>
         </fieldset>
+
         <div className='table-availability-box'  aria-atomic="true" aria-live="Assertive" role="status">
           {(isFormValid() && isTableAvailable()) ? <h3>Available!</h3>:<h3>No Tables Available</h3>}
         </div>
-        <button id="reservation-btn"type="submit" disabled={!isFormValid()}>Select Table</button>
+        <button id="reservation-btn" type="submit" disabled={!isFormValid()}>Select Table</button>
       </form>
   </>)
 }
+export default memo(ReserveATable);

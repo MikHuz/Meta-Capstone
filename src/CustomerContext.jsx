@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
-export const CustomerContext = createContext();
 
+export const CustomerContext = createContext();
 export function CustomerProvider({ children }) {
   const [customerDetails, setCustomerDetails] = useState({
     table: {
@@ -26,7 +26,6 @@ export function CustomerProvider({ children }) {
     },
   });
 
-  // Helper to update nested parts of customerDetails
   function updateTable(newTableData) {
     alert("Inside UpdateTable")
     setCustomerDetails({
