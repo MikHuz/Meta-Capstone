@@ -6,6 +6,7 @@ import { CustomerProvider,CustomerContext } from '../CustomerContext';
 function CustomerDetails(props) {
   const location = useLocation();
   const {customerDetails,updateDetails} = useContext(CustomerContext)
+  console.log("INSIDE CUSTOMER DETAILS:", customerDetails)
   const userDetails = customerDetails.details;
   const [details, setDetails] = useState(userDetails !== '' ? userDetails:
     {
@@ -16,7 +17,7 @@ function CustomerDetails(props) {
     requests: ''
   });
   const { date, time, guests } = customerDetails.table;
-  console.log("This IS FROM CONTEXT OR NOT: ",details)
+  //console.log("This IS FROM CONTEXT OR NOT: ",details)
 
   const [touched, setTouched] = useState({
     firstName: false,

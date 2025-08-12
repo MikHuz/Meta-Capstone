@@ -71,14 +71,18 @@ function BookingPage(){
     }
     initializeTimes();
   }, []);
-
-  console.log("AvaibleTimes:", availableTimes);
+  const submitBooking = (data)=>{
+    alert("submitting reservation")
+    console.log("Customer Form data:",data)
+    return submitAPI(data)
+  }
+ // console.log("AvaibleTimes:", availableTimes);
   return(
  <Routes>
   <Route path="/" element={<Navigate to="/reserve" />} />
   <Route path="/reserve" element={<ReserveATable availableTimes={availableTimes} updateTimes={dispatch}/>} />
   <Route path="/reserve/customerdetails" element={<CustomerDetails />} />
-  <Route path="/reserve/payment" element={<Payment/>} />
+  <Route path="/reserve/payment" element={<Payment submitBooking={submitBooking}/>} />
   <Route path="/reserve/confirmation" element={<Confirmation />} />
  </Routes>
   )

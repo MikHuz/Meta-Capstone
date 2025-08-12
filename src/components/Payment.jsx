@@ -3,11 +3,12 @@ import { useState,useContext,useEffect,useRef} from 'react'
 import { Routes, Route,Navigate,Link,useNavigate,useLocation} from 'react-router-dom';
 import { CustomerContext,CustomerProvider} from '../CustomerContext';
 import credit_card from '/src/assets/creditcard.png'
-function Payment(props) {
+function Payment({submitBooking}) {
   const navigate = useNavigate();
   const { customerDetails, updatePayment,updateDetails,updateTable} = useContext(CustomerContext);
+  console.log("INSIDE CUSTOMER DETAILS:", customerDetails)
   const [paymentDetails, setPaymentDetails] = useState(customerDetails.payment);
-  console.log(paymentDetails)
+  //console.log(paymentDetails)
   const [touched,setTouched]=useState({
     cardNumber: false,
     cardName: false,
@@ -33,18 +34,18 @@ function Payment(props) {
     }));
     setTouched({...touched,[name]:true})
     updatePayment(paymentDetails)
-   
   };
   const handleSubmit = (e) => {
   e.preventDefault();
     if (e.target.checkValidity()){
       console.log("Payment Confirmed", paymentDetails);
-      updatePayment({cardNumber: '', cardName: '', expiryDate: '', cvv: '', confirmationPreference: ''});
-      updateDetails({firstName: '',lastName: '',email: '',phone: '',requests: ''});
-      updateTable({date: '',time: '',guests: 1, occasion: '',seatingPreference: ''});
-      navigate("/reserve/confirmation");
+      if (submitBooking({...customerDetails.table,...customerDetails.details,...customerDetails.payment})){
+        updatePayment({cardNumber: '', cardName: '', expiryDate: '', cvv: '', confirmationPreference: ''});
+        updateDetails({firstName: '',lastName: '',email: '',phone: '',requests: ''});
+        updateTable({date: '',time: '',guests: 1, occasion: '',seatingPreference: ''});
+        navigate("/reserve/confirmation");
+      }
     }
-
   };
 
   return (

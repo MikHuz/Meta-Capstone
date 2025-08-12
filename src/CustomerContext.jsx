@@ -26,16 +26,15 @@ export function CustomerProvider({ children }) {
     },
   });
 
-  function updateTable(newTableData) {
-    alert("Inside UpdateTable")
-    setCustomerDetails({
-      ...customerDetails,
-      table: {
-        ...customerDetails.table,
-        ...newTableData,
-      }
-    })
-  };
+function updateTable(newTableData) {
+  setCustomerDetails(prev => ({
+    ...prev,
+    table: {
+      ...prev.table,
+      ...newTableData,
+    }
+  }));
+}
 
   const updateDetails = (newDetailsData) => {
     setCustomerDetails(prev => ({
