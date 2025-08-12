@@ -2,17 +2,19 @@ import { useState,useContext,useEffect,useRef,useReducer} from 'react'
 import { Routes, Route,Navigate,Link,useNavigate,useLocation} from 'react-router-dom';
 import { CustomerContext } from './CustomerContext';
 import { CustomerProvider } from './CustomerContext'; 
+import {fetchAPI,submitAPI} from './apis/timeAPI.js'
+
 import  ReserveATable from './components/ReserveATable.jsx'
 import CustomerDetails from './components/CustomerDetails.jsx'
 import Payment from './components/Payment.jsx'
+import Confirmation from './components/Confirmation.jsx'
 import './css/index.css'
 import './css/App.css'
 import menu from '/src/assets/hamburger_menu.png'
 import logo from '/src/assets/Logo.png'
 import footer_logo from '/src/assets/favicon.png'
 import basket from '/src/assets/Basket.png'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+
 function Header(props){
   return (<>
   <header>
@@ -30,36 +32,47 @@ function Header(props){
   </header>
   </>)
 }
-
-
-function Confirmation(props){
-  const navigate = useNavigate()
-  return (<>
-  <div id="confirmation-page">
-  <h2>Reservation Confirmed!</h2>
-  <span>Thank you for choosing Little Lemon. We look forward to serving you!</span>
-  <button id="home-btn"onClick={() => navigate('/reserve')}>Home</button>
-  </div>
-  </>)
+function convertToAmPm(time24) {
+  const [hourStr, minute] = time24.split(':');
+  let hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  hour = hour % 12;
+  if (hour === 0) hour = 12;
+  return `${hour}:${minute} ${ampm}`;
 }
-function updateTimes(currentTimes,date){
-  console.log("CurrentTime:", currentTimes, " Date passed: ", date)
-  switch(date){
-    case(0):
-      return currentTimes+=0
+function updateTimes(state, action){
+  let timesAMPM = []
+  switch(action.type){
+    case("initializeTimes"):
+      timesAMPM = action.payload.map( timeSlot =>{
+        return convertToAmPm(timeSlot)
+      })
+      return timesAMPM
       break;
-    case(1):
-      return currentTimes+=1
+    case('updatingTimes'):
+      timesAMPM = action.payload.map( timeSlot =>{
+        return convertToAmPm(timeSlot)
+      }) 
+      return timesAMPM
       break;
     default:
-      return currentTimes+=2
+      return []
       break;
   }
-
 }
 function BookingPage(){
-  const initialTimes = 0;
-  const [availableTimes, dispatch] = useReducer(updateTimes,initialTimes)
+  const [availableTimes, dispatch] = useReducer(updateTimes, []);
+
+  useEffect(() => {
+    async function initializeTimes() {
+      const currentDate = new Date();
+      const currentTimes = await fetchAPI(currentDate);
+      dispatch({ type: 'initializeTimes', payload: currentTimes });
+    }
+    initializeTimes();
+  }, []);
+
+  console.log("AvaibleTimes:", availableTimes);
   return(
  <Routes>
   <Route path="/" element={<Navigate to="/reserve" />} />

@@ -26,9 +26,10 @@ function renderComponent(path,props){
     );
 
 }
-describe.skip("Reserve Table Form", () => {
- test.skip("All form elements are present", () => {
-    const props={availableTimes:0, updateTimes:jest.fn()}
+describe("Reserve Table Form", () => {
+   const timeOptions = ["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM"]
+ test("All form elements are present", () => {
+    const props={availableTimes:timeOptions, updateTimes:jest.fn()}
     renderComponent("reserve", props);
 
     expect(screen.getByLabelText(/select date/i)).toBeInTheDocument();
@@ -40,8 +41,8 @@ describe.skip("Reserve Table Form", () => {
     expect(screen.getByRole('button', { name: /select table/i })).toBeInTheDocument();
   });
 
-  test.skip("Input Interaction for all fields", () => {
-    const props= {availableTimes:0, updateTimes:jest.fn()}
+  test("Input Interaction for all fields", () => {
+    const props= {availableTimes:timeOptions, updateTimes:jest.fn()}
     renderComponent("reserve", props);
 
     const dateInput = screen.getByLabelText(/select date/i);
@@ -75,8 +76,8 @@ describe.skip("Reserve Table Form", () => {
     // no toBeInTheDocument here per your request
   });
 
-  test.skip("Submit Button disabled functionality", () => {
-    const props= {availableTimes:0, updateTimes:jest.fn()}
+  test("Submit Button disabled functionality", () => {
+    const props= {availableTimes:timeOptions, updateTimes:jest.fn()}
     renderComponent("reserve", props);
 
     const submitButton = screen.getByRole('button', { name: /select table/i });
@@ -109,8 +110,8 @@ describe.skip("Reserve Table Form", () => {
     expect(submitButton).not.toBeDisabled();
 
   });
-  test.skip("Invalidation check on all inputs(INCORRECT inputs)", ()=>{
-    const props= {availableTimes:0, updateTimes:jest.fn()}
+  test("Invalidation check on all inputs(INCORRECT inputs)", ()=>{
+    const props= {availableTimes:timeOptions, updateTimes:jest.fn()}
     renderComponent("reserve", props);
 
     const submitButton = screen.getByRole('button', { name: /select table/i });
@@ -155,8 +156,8 @@ describe.skip("Reserve Table Form", () => {
     expect(submitButton).toBeDisabled();
     expect(form).toBeInvalid()
   })
-   test.skip("Validation check on all inputs(CORRECT inputs)", ()=>{
-    const props= {availableTimes:0, updateTimes:jest.fn()}
+   test("Validation check on all inputs(CORRECT inputs)", ()=>{
+    const props= {availableTimes:timeOptions, updateTimes:jest.fn()}
     renderComponent("reserve", props);
 
     const submitButton = screen.getByRole('button', { name: /select table/i });
@@ -207,8 +208,8 @@ describe.skip("Reserve Table Form", () => {
     expect(submitButton).not.toBeDisabled();expect(form).toBeValid()
   })
 });
-describe.skip ("Customer Details Form,", ()=>{
-  test.skip("All form elements are present", ()=>{
+describe ("Customer Details Form,", ()=>{
+  test("All form elements are present", ()=>{
     renderComponent("reserve/customerdetails",{})
 
     const firstNameInput = screen.getByLabelText(/First Name/i)

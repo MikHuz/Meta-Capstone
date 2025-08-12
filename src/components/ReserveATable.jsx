@@ -1,4 +1,5 @@
 import { memo } from "react";
+import {fetchAPI,submitAPI} from '../apis/timeAPI.js'
 import { useState,useContext,useEffect,useRef} from 'react'
 import { Routes, Route,Navigate,Link,useNavigate,useLocation} from 'react-router-dom';
 import { CustomerContext } from '../CustomerContext';
@@ -7,7 +8,7 @@ import restaurant from '/src/assets/restaurant.jpg'
 import restaurant_food from '/src/assets/restaurant_food.jpg'
 import mario_adrian_A from '/src/assets/Mario and Adrian A.jpg'
 
-function ReserveATable({availableTimes,updateTimes}){
+function ReserveATable({availableTimes, updateTimes}){
   const { customerDetails, updateTable} = useContext(CustomerContext);
   const { table } = customerDetails;
   const [date, setDate] = useState(table.date !== '' ? table.date : '');
@@ -15,7 +16,6 @@ function ReserveATable({availableTimes,updateTimes}){
   const [guests, setGuests] = useState(table.guests !== '' ? table.guests : 1);
   const [occasion, setOccasion] = useState(table.occasion !== '' ? table.occasion : '');
   const [seatingPreference, setSeatingPreference] = useState(table.seatingPreference !== '' ? table.seatingPreference : '');
-  const timeOptions = ["9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM","6:30 PM","7:00 PM","7:30 PM","8:00 PM"];
   const navigate = useNavigate();
   console.log("TABLE:", table);
   console.log(date,time,guests,occasion,seatingPreference)
@@ -34,9 +34,19 @@ function ReserveATable({availableTimes,updateTimes}){
     }
   }
   const isTableAvailable = () => {
-    // Placeholder logic for real table availability, is called upon every form entry  like isFormValid
+    // Placeholder logic for real table availability, is called upon every form entry like isFormValid
     return true;
   }
+  useEffect(()=>{
+    async function fetchTimes(date){
+      const userSelectedDateTimes = await fetchAPI(new Date(date))
+      updateTimes({type:"updatingTimes",payload:userSelectedDateTimes} )
+    }
+    if (date!== ''){
+      fetchTimes(date)
+    }
+  },[date])
+  const timeOptions = ["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM"]
   return (<>
       <form className="table-selection-form" onSubmit={handleSubmit} method="GET" aria-labelledby="table-header">
         <h2 id="table-header">Reserve-A-Table</h2>
@@ -47,7 +57,8 @@ function ReserveATable({availableTimes,updateTimes}){
           <label htmlFor="date">Select Date</label>
           <input type="date" id="date" name="date" value={date} 
            onChange={(e) => {
-              setDate(e.target.value);updateTimes({type:"date",date:e.target.value } )}} 
+              setDate(e.target.value); 
+              setTime(''); }}
            required />
         </div>
    
@@ -56,7 +67,12 @@ function ReserveATable({availableTimes,updateTimes}){
           <select value={time} id="time" name="time" onChange={(e) => setTime(e.target.value)} required>
             <option value="">Select A Time</option>
             {timeOptions.map((time)=>{
-              return <option key={time} value={time}>{time}</option>
+              if (availableTimes.includes(time)){
+                return <option key={time} value={time}>{time}</option>
+              }
+              else{
+                return <option key={time} value={time} disabled>{time}</option>
+              }
             })}
           </select>
         </div>
