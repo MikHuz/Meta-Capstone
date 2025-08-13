@@ -184,9 +184,9 @@ describe("Reserve Table Form", () => {
     const guestsInput = screen.getByLabelText(/number of guests/i);
     fireEvent.change(guestsInput, { target: { value: "1" } });
     expect(timeSelect).toBeValid();expect(submitButton).toBeDisabled();expect(form).toBeInvalid()
-    fireEvent.change(guestsInput, { target: { value: "20" } });
+    fireEvent.change(guestsInput, { target: { value: "5" } });
     expect(timeSelect).toBeValid();expect(submitButton).toBeDisabled();expect(form).toBeInvalid()
-    fireEvent.change(guestsInput, { target: { value: "14" } });
+    fireEvent.change(guestsInput, { target: { value: "10" } });
     expect(timeSelect).toBeValid();expect(submitButton).toBeDisabled();expect(form).toBeInvalid()
 
     const occasionSelect = screen.getByLabelText(/occasion/i);

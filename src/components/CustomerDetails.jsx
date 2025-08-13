@@ -41,6 +41,11 @@ function CustomerDetails(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormFilled() && e.target.checkValidity()) {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(details.email)) {
+        alert("Please enter a valid email address Ex: user@example.com");
+        return;
+      }
       updateDetails(details)
       console.log("Customer Details submitted:", details);
       navigate("/reserve/payment");
@@ -104,7 +109,7 @@ function CustomerDetails(props) {
 
         <div className="form-box">
           <label htmlFor="email" className="call-to-attention">
-            <sup>*</sup>Email
+          <sup>*</sup>Email
           </label>
           <input
             type="email"
@@ -112,6 +117,7 @@ function CustomerDetails(props) {
             name="email"
             value={details.email}
             placeholder="email@example.com"
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$"
             required
             aria-describedby={touched.email && details.email.length === 0 ? "emailError" : undefined}
             onChange={(e) =>
@@ -138,7 +144,7 @@ function CustomerDetails(props) {
             name="phone"
             value={details.phone}
             placeholder="123-456-7890"
-            pattern="\d{3}-\d{3}-\d{4}"
+            pattern="\d{3}-?\d{3}-?\d{4}"
             required
             aria-describedby={touched.phone && details.phone.length === 0 ? "phoneError" : undefined}
             onChange={(e) =>
