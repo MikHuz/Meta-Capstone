@@ -13,7 +13,6 @@ import './css/App.css'
 import menu from '/src/assets/hamburger_menu.png'
 import logo from '/src/assets/Logo.png'
 import smallLogo from '/src/assets/small_logo.png'
-import footer_logo from '/src/assets/favicon.png'
 import basket from '/src/assets/Basket.png'
 
 function Header(props){

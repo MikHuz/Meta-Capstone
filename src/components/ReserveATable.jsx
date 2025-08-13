@@ -84,8 +84,8 @@ function ReserveATable({availableTimes, updateTimes}){
         </div>
 
         <div className='form-box guest-box'>
-          <label htmlFor="guests">Number of Guests</label>
-          <input type="number" id="guests" name="guests" min="1" max="20" value={guests} onChange={(e) => setGuests(e.target.value)} required />
+          <label htmlFor="guests">Number of Guests(Max 10)</label>
+          <input type="number" id="guests" name="guests" min="1" max="10" value={guests} onChange={(e) => setGuests(e.target.value)} required />
         </div>
 
         <div className='form-box occasion-box'>
@@ -105,8 +105,8 @@ function ReserveATable({availableTimes, updateTimes}){
               type="radio"
               id="indoor"
               name="seating-preference"
-              value="indoor"
-              checked={seatingPreference === 'indoor'}
+              value="Indoor"
+              checked={seatingPreference === 'Indoor'}
               onChange={(e) => setSeatingPreference(e.target.value)}
               required
             />
@@ -117,8 +117,8 @@ function ReserveATable({availableTimes, updateTimes}){
               type="radio"
               id="outdoor"
               name="seating-preference"
-              value="outdoor"
-              checked={seatingPreference === 'outdoor'}
+              value="Outdoor"
+              checked={seatingPreference === 'Outdoor'}
               onChange={(e) => setSeatingPreference(e.target.value)}
               required
             />

@@ -254,7 +254,13 @@ header nav img {
     line-height:0;
     margin-top:0.2rem;
     line-height: 1;;
-    color:#EDEFEE;
+   
+}
+#confirmation-page span:first-of-type{
+    color:#EDEFEE
+}
+#confirmation-page span:not(:first-of-type){
+    color:black
 }
 #home-btn{
     width:50%;
