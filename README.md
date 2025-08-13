@@ -61,3 +61,7 @@ Unit tests are implemented using **Jest** to validate critical functionality suc
 5. Run the project
 
    Type in "npm run dev". Open your browser to http://localhost:5173 (default Vite port) to explore the app.
+   
+6. Test the project
+
+   Type in "npm run test" in the terminal directory
