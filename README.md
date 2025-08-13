@@ -48,7 +48,7 @@ Unit tests are implemented using **Jest** to validate critical functionality suc
 
 1. Clone the repo
 
-   git clone [https://github.com/yourusername/restaurant-reservation.git](https://github.com/MikHuz/Meta-Capstone.git)
+   git clone https://github.com/MikHuz/Meta-Capstone.git
 
 3. cd into the project directory
    
