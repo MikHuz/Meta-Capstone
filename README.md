@@ -26,6 +26,10 @@ This is a multi-page React project simulating a restaurant reservation workflow,
 
 ## Technical Highlights
 
+### Built with Vite
+
+This project uses [Vite](https://vitejs.dev/) for fast development and optimized builds. Vite provides a modern, lightning-fast development experience with hot module replacement.
+
 ### React Context for State Management
 
 The project uses **React Context** to manage and share state across multiple pages in the reservation flow. This allows form data to persist as users navigate between steps without relying on external state management libraries.
@@ -36,6 +40,24 @@ While this project does not connect to a real backend, it simulates API calls fo
 
 ### Jest Test Coverage
 
-Unit and integration tests are implemented using **Jest** to validate critical functionality such as form validation, state updates, and component rendering. Test coverage helps ensure that changes do not break existing features and supports maintainable code quality.
+Unit tests are implemented using **Jest** to validate critical functionality such as form validation, state updates, and component rendering. Test coverage helps ensure that changes do not break existing features and supports maintainable code quality.
 
 ---
+
+## Installation
+
+1. Clone the repo
+
+   git clone [https://github.com/yourusername/restaurant-reservation.git](https://github.com/MikHuz/Meta-Capstone.git)
+
+3. cd into the project directory
+   
+   Open a terminal and type "cd *directory path*"
+
+4. Install dependencies from the terminal
+
+   Type "npm install"
+
+5. Run the project
+
+   Type in "npm run dev". Open your browser to http://localhost:5173 (default Vite port) to explore the app.
