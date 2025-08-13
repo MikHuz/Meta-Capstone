@@ -169,7 +169,7 @@ function CustomerDetails(props) {
           />
         </div>
         <div className='buttons'>
-          <button id="back-btn" type="button" onClick={() => navigate("/reserve")}>
+          <button id="back-btn" type="button" aria-label="Back Button" onClick={() => navigate("/reserve")}>
             Back
           </button>
           <button id="details-btn" type="submit" disabled={!isFormFilled()} aria-label="Continue to payment">

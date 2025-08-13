@@ -8,6 +8,9 @@ import restaurant from '/src/assets/restaurant.jpg'
 import restaurant_food from '/src/assets/restaurant_food.jpg'
 import mario_adrian_A from '/src/assets/Mario and Adrian A.jpg'
 
+function formatDate(date) {
+    return date.toISOString().split('T')[0];
+  }
 function ReserveATable({availableTimes, updateTimes}){
   const { customerDetails, updateTable} = useContext(CustomerContext);
   const { table } = customerDetails;
@@ -16,12 +19,15 @@ function ReserveATable({availableTimes, updateTimes}){
   const [guests, setGuests] = useState(table.guests !== '' ? table.guests : 1);
   const [occasion, setOccasion] = useState(table.occasion !== '' ? table.occasion : '');
   const [seatingPreference, setSeatingPreference] = useState(table.seatingPreference !== '' ? table.seatingPreference : '');
+  const today = new Date()
+  const minDate = formatDate(today);
+  const maxDate = formatDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 365));
   const navigate = useNavigate();
   console.log("TABLE:", table);
   console.log(date,time,guests,occasion,seatingPreference)
   const isFormValid = ()=>{
     if(date && time && guests && occasion && seatingPreference){
-      return true/*Checks if form is filled, html runs native validation*/
+      return true
     }
     return false
   }
@@ -55,7 +61,7 @@ function ReserveATable({availableTimes, updateTimes}){
 
         <div className='form-box date-box'>
           <label htmlFor="date">Select Date</label>
-          <input type="date" id="date" name="date" value={date} 
+          <input type="date" id="date" name="date" value={date} min={minDate} max={maxDate}
            onChange={(e) => {
               setDate(e.target.value); 
               setTime(''); }}
