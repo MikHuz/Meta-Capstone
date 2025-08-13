@@ -72,9 +72,15 @@ function BookingPage(){
     initializeTimes();
   }, []);
   const submitBooking = (data)=>{
-    alert("submitting reservation")
+    //alert("submitting reservation")
     console.log("Customer Form data:",data)
-    return submitAPI(data)
+    if (submitAPI(data)){
+      localStorage.setItem("formData", JSON.stringify(data));
+      const savedData = JSON.parse(localStorage.getItem("formData"));
+      console.log("LOCALSTORAGE:" ,savedData)
+      return true;
+    }
+    return false;
   }
  // console.log("AvaibleTimes:", availableTimes);
   return(
