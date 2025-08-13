@@ -1,12 +1,22 @@
-# React + Vite
+# Restaurant Reservation Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This is a multi-page React project simulating a restaurant reservation workflow, built as part of a course assignment. The app includes the following pages:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Reserve a Table:** Select date, time, guests, and preferences  
+- **Customer Details:** Collect user contact information  
+- **Payment:** Capture payment information securely (simulated)  
+- **Confirmation:** Show reservation confirmation and summary  
 
-## Expanding the ESLint configuration
+> **Note:** This project is for learning and demonstration purposes only and is **not intended for production use**.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Features
+
+- Multi-step form navigation across pages  
+- Basic client-side validation with accessible error messaging  
+- State management to preserve data between steps  
+- Simulated submission process and confirmation display  
+- Accessibility best practices including labels, ARIA attributes, and live regions  
