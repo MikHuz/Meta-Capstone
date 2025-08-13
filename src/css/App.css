@@ -305,7 +305,7 @@ footer img{
 footer li {
   text-align: left;
 }
-footer img{height:1.2rem;width:auto;}
-@media (max-width:668px){footer img{height:1rem;width:auto;}}
-@media (max-width:500px){footer img{height:0.7em;width:auto;}}
+footer img{height:1.5rem;width:auto;}
+@media (max-width:668px){footer img{height:1.2rem;width:auto;}}
+@media (max-width:500px){footer img{height:1.2rem;width:auto;}}
 /*Footer*/
